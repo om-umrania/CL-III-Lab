@@ -2,6 +2,12 @@
 # ----------------------------
 # Server-side code for distributed factorial computation using XML-RPC in Python
 
+# Assignment 1
+# Name: Om Umrania
+# Roll Number: BEAD21163
+# Subject: Computer Laboratory III (Computational Intelligence)
+
+
 from xmlrpc.server import SimpleXMLRPCServer
 from xmlrpc.server import SimpleXMLRPCRequestHandler
 

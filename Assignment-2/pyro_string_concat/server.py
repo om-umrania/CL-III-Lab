@@ -4,6 +4,12 @@
 
 import Pyro4
 
+# Assignment 2
+# Name: Om Umrania
+# Roll Number: BEAD21163
+# Subject: Computer Laboratory III (Computational Intelligence)
+
+
 # Decorator to expose this class to Pyro4 clients
 @Pyro4.expose
 class StringConcatenationServer:

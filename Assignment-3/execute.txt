@@ -3,3 +3,9 @@ hadoop jar $HADOOP_HOME/share/hadoop/tools/lib/hadoop-streaming-*.jar \
     -output char_output \
     -mapper char_mapper.py \
     -reducer char_reducer.py
+
+
+
+python char_count_local.py
+
+python word_count_local.py

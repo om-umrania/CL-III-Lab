@@ -1,6 +1,12 @@
 # word_reducer.py
 # Reducer script for word count
 
+
+# Assignment 3
+# Name: Om Umrania
+# Roll Number: BEAD21163
+# Subject: Computer Laboratory III (Computational Intelligence)
+
 import sys
 
 current_word = None

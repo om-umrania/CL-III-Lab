@@ -2,6 +2,11 @@
 # ----------------------------
 # Client-side code to access string concatenation via Pyro4 remote server
 
+# Assignment 2
+# Name: Om Umrania
+# Roll Number: BEAD21163
+# Subject: Computer Laboratory III (Computational Intelligence)
+
 import Pyro4
 
 def main():
