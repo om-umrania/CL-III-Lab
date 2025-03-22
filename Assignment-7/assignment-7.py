@@ -68,7 +68,7 @@ def encode_data(X):
     return (X - X.min(axis=0)) / (X.max(axis=0) - X.min(axis=0) + 1e-6)
 X_encoded = encode_data(X)
 
-# Enhanced AIS Classifier with Mutation and Cloning
+# === Enhanced AIS Classifier with Accuracy Over Generations ===
 class AISClassifier:
     def __init__(self, num_detectors=10, mutation_rate=0.1, clone_rate=3, max_generations=10):
         self.num_detectors = num_detectors
@@ -76,6 +76,7 @@ class AISClassifier:
         self.clone_rate = clone_rate
         self.max_generations = max_generations
         self.convergence_history = []
+        self.generation_accuracy = []
 
     def _mutate(self, detector):
         mutation_vector = np.random.normal(0, self.mutation_rate, size=detector.shape)
@@ -104,6 +105,11 @@ class AISClassifier:
             self.detectors = np.array(mutated_detectors[:self.num_detectors])
             self.labels = np.array(mutated_labels[:self.num_detectors])
 
+            # === Track Training Accuracy ===
+            y_pred_train = self.predict(X_train)
+            train_accuracy = accuracy_score(y_train, y_pred_train)
+            self.generation_accuracy.append(train_accuracy)
+
     def predict(self, X_test):
         predictions = []
         self.detectors = np.asarray(self.detectors, dtype=np.float64)
@@ -119,40 +125,59 @@ class AISClassifier:
     def plot_convergence(self):
         import matplotlib.pyplot as plt
         plt.figure(figsize=(8, 4))
-        plt.plot(self.convergence_history, marker='o')
+        plt.plot(self.convergence_history, marker='o', label="Avg Mutation Distance")
         plt.title("Detector Convergence over Generations")
         plt.xlabel("Generation")
         plt.ylabel("Average Mutation Distance")
         plt.grid(True)
         plt.tight_layout()
+        plt.legend()
         plt.show()
 
-# Train/Test Split and Classification
+    def plot_accuracy_over_generations(self):
+        import matplotlib.pyplot as plt
+        plt.figure(figsize=(8, 4))
+        plt.plot(self.generation_accuracy, marker='s', color='green', label="Training Accuracy")
+        plt.title("Training Accuracy over Generations")
+        plt.xlabel("Generation")
+        plt.ylabel("Accuracy")
+        plt.ylim(0, 1.05)
+        plt.grid(True)
+        plt.tight_layout()
+        plt.legend()
+        plt.show()
+
+# === Train/Test Split and Run AIS Classification ===
 X_train, X_test, y_train, y_test = train_test_split(X_encoded, y, test_size=0.3, random_state=42)
+
 model = AISClassifier(num_detectors=20, mutation_rate=0.05, clone_rate=4, max_generations=15)
 model.train(X_train, y_train)
-y_pred = model.predict(X_test)
 
-# Classification Metrics
+# Predictions & Evaluation
+y_pred = model.predict(X_test)
 accuracy = accuracy_score(y_test, y_pred)
 conf_matrix = confusion_matrix(y_test, y_pred)
 class_report = classification_report(y_test, y_pred, target_names=list(y_map.keys()))
 
+# Display Metrics
 print(f"\nClassification Accuracy: {accuracy * 100:.2f}%")
 print("\nConfusion Matrix:")
 print(conf_matrix)
 print("\nClassification Report (Precision, Recall, F1-score):")
 print(class_report)
 
-# Visualize Confusion Matrix
+# === Visualizations ===
 import matplotlib.pyplot as plt
 import seaborn as sns
+
 plt.figure(figsize=(6,4))
 plt.title("Confusion Matrix")
 sns.heatmap(conf_matrix, annot=True, fmt="d", cmap='Blues')
 plt.xlabel("Predicted")
 plt.ylabel("Actual")
+plt.tight_layout()
 plt.show()
 
-# Visualize Detector Convergence
+# Plot AIS Model Metrics
 model.plot_convergence()
+model.plot_accuracy_over_generations()
