@@ -1,0 +1,22 @@
+# Terminal 1:
+cd rmi_string_concat
+rmiregistry 5000
+
+# Terminal 2 (after rmiregistry is running):
+javac StringConcatenator.java StringConcatenatorImpl.java StringConcatenationClient.java
+java StringConcatenatorImpl
+
+# Terminal 3 (once server is running):
+java StringConcatenationClient
+
+
+
+ps aux | grep rmiregistry
+cd Assignment_2/rmi_string_concat
+rmiregistry 1099
+
+cd Assignment_2/rmi_string_concat
+java StringConcatenationServer
+
+cd Assignment_2/rmi_string_concat
+java StringConcatenationClient

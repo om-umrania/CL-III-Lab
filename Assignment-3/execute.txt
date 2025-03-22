@@ -1,0 +1,5 @@
+hadoop jar $HADOOP_HOME/share/hadoop/tools/lib/hadoop-streaming-*.jar \
+    -input input.txt \
+    -output char_output \
+    -mapper char_mapper.py \
+    -reducer char_reducer.py
